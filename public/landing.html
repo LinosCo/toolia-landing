@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Toolia Studio — Il patrimonio culturale, raccontato come merita</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0a0a0a;
+    --white: #ffffff;
+    --amber: #F5B731;
+    --gray: #6B6B6B;
+    --gray-light: #f5f5f3;
+    --display: 'Playfair Display', Georgia, serif;
+    --font: 'Inter', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font);
+    color: var(--black);
+    background: var(--white);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 48px;
+    background: transparent;
+    transition: background .3s ease;
+  }
+  nav.scrolled {
+    background: rgba(10,10,10,.85);
+    backdrop-filter: blur(16px);
+  }
+  nav img { height: 20px; opacity: .85; }
+  nav a {
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255,255,255,.7);
+    padding: 7px 0;
+    text-decoration: none;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    transition: color .2s;
+    border: none;
+    background: none;
+  }
+  nav a:hover { color: var(--amber); }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    height: 100vh;
+    min-height: 700px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 80px 64px;
+    overflow: hidden;
+    background: var(--black);
+  }
+  .hero-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+  }
+  .hero-mobile-bg {
+    display: none;
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(rgba(0,0,0,.45), rgba(0,0,0,.55)), url('/landing/img/foto-rotonda.webp') center/cover;
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    display: none;
+  }
+  .hero-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-family: var(--display);
+    font-size: clamp(48px, 7vw, 88px);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.05;
+    letter-spacing: -.025em;
+    margin-bottom: 28px;
+  }
+  .hero p {
+    font-size: 18px;
+    font-weight: 300;
+    color: rgba(255,255,255,.65);
+    line-height: 1.7;
+    max-width: 600px;
+  }
+  .hero-scroll {
+    position: absolute;
+    bottom: 40px;
+    right: 48px;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    color: var(--white);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+  }
+  .hero-scroll .scroll-line {
+    width: 1px;
+    height: 48px;
+    background: var(--amber);
+    animation: scroll-bounce 1.8s ease infinite;
+    transform-origin: top;
+  }
+  @keyframes scroll-bounce {
+    0% { transform: scaleY(0); opacity: 0; }
+    40% { transform: scaleY(1); opacity: 1; }
+    80% { transform: scaleY(1); opacity: 0; }
+    100% { transform: scaleY(0); opacity: 0; }
+  }
+
+  /* ── SECTIONS ── */
+  section {
+    padding: 120px 64px;
+  }
+  .section-inner {
+    max-width: 1120px;
+    margin: 0 auto;
+  }
+
+  /* Section label */
+  .s-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 20px;
+  }
+
+  /* Section title */
+  .s-title {
+    font-family: var(--display);
+    font-size: clamp(36px, 4.5vw, 56px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -.02em;
+    margin-bottom: 32px;
+  }
+
+  .s-body {
+    font-size: 17px;
+    font-weight: 300;
+    line-height: 1.8;
+    color: #444;
+    max-width: 680px;
+  }
+  .s-body b { font-weight: 700; color: var(--black); }
+
+  /* ── DARK SECTION ── */
+  .dark-section {
+    background: #1a1a1a;
+    color: var(--white);
+  }
+  .dark-section .s-title { color: var(--white); }
+  .dark-section .s-body { color: rgba(255,255,255,.6); }
+  .dark-section .s-body b { color: var(--amber); }
+
+  /* ── AMBER SECTION ── */
+  .amber-section {
+    background: var(--amber);
+  }
+  .amber-section .s-label { color: rgba(0,0,0,.35); }
+  .amber-section .s-title { color: var(--black); }
+  .amber-section .s-body { color: rgba(0,0,0,.7); }
+  .amber-section .s-body b { color: var(--black); }
+
+  /* ── GRAY SECTION ── */
+  .gray-section {
+    background: var(--gray-light);
+  }
+
+  /* ── PULLQUOTE ── */
+  .pullquote {
+    padding: 140px 64px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .pullquote .pq-text {
+    font-family: var(--display);
+    font-size: clamp(32px, 4.5vw, 58px);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -.02em;
+    max-width: 900px;
+    margin-bottom: 28px;
+  }
+  .pullquote .pq-text span { color: var(--amber); }
+  .pullquote .pq-sub {
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--gray);
+    max-width: 560px;
+    line-height: 1.7;
+  }
+
+  /* ── GRID LAYOUTS ── */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px 64px;
+    margin-top: 56px;
+  }
+  .grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 40px 48px;
+    margin-top: 56px;
+  }
+  .grid-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px 40px;
+    margin-top: 56px;
+  }
+
+  /* Card */
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .card-icon {
+    width: 48px;
+    height: 48px;
+    color: var(--amber);
+  }
+  .card h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--black);
+  }
+  .card p {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--gray);
+    line-height: 1.7;
+  }
+  .dark-section .card h3 { color: var(--white); }
+  .dark-section .card p { color: rgba(255,255,255,.45); }
+
+  /* ── STEPS ── */
+  .steps-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    margin-top: 56px;
+  }
+  .step {
+    padding: 0 32px 0 0;
+    position: relative;
+  }
+  .step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 12px;
+    top: 44px;
+    width: 20px;
+    height: 2px;
+    background: var(--amber);
+  }
+  .step-num {
+    font-family: var(--display);
+    font-size: 64px;
+    font-weight: 800;
+    color: var(--amber);
+    opacity: .18;
+    line-height: 1;
+    letter-spacing: -.04em;
+    margin-bottom: -8px;
+  }
+  .step h4 {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--black);
+    margin-bottom: 8px;
+  }
+  .step p {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--gray);
+    line-height: 1.65;
+  }
+
+  /* ── KPI ROW ── */
+  .kpi-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    margin-top: 56px;
+  }
+  .kpi {
+    padding: 40px;
+    border-right: 1px solid rgba(255,255,255,.08);
+  }
+  .kpi:last-child { border-right: none; }
+  .kpi:first-child { padding-left: 0; }
+  .kpi-number {
+    font-family: var(--display);
+    font-size: 72px;
+    font-weight: 800;
+    color: var(--amber);
+    line-height: 1;
+    letter-spacing: -.03em;
+    margin-bottom: 12px;
+  }
+  .kpi h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    margin-bottom: 8px;
+  }
+  .kpi p {
+    font-size: 13px;
+    font-weight: 300;
+    color: rgba(255,255,255,.4);
+    line-height: 1.6;
+  }
+
+  /* ── VIDEO SECTION ── */
+  .video-section {
+    padding: 0;
+    position: relative;
+  }
+  .video-section video {
+    width: 100%;
+    display: block;
+  }
+  .video-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(10,10,10,.6) 0%, transparent 40%, transparent 60%, rgba(10,10,10,.8) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 64px;
+  }
+  .video-overlay .s-label { color: var(--amber); }
+  .video-overlay .s-title { color: var(--white); font-size: 44px; margin-bottom: 12px; }
+  .video-overlay p { color: rgba(255,255,255,.6); font-size: 15px; font-weight: 300; line-height: 1.7; max-width: 560px; }
+
+  /* ── SPLIT ── */
+  .split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 560px;
+  }
+  .split-col {
+    padding: 80px 64px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 24px;
+  }
+  .split-col.bg-black { background: var(--black); }
+  .split-col.bg-black .s-title { color: var(--white); }
+  .split-col.bg-black p { color: rgba(255,255,255,.55); }
+
+  /* ── 2-COL SEMANTIC ── */
+  .sem-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    margin-top: 48px;
+  }
+  .sem-block {
+    border-left: 3px solid var(--amber);
+    padding-left: 28px;
+  }
+  .sem-block h4 {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    margin-bottom: 14px;
+  }
+  .sem-block p {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--gray);
+    line-height: 1.75;
+  }
+  .dark-section .sem-block h4 { color: var(--white); }
+  .dark-section .sem-block p { color: rgba(255,255,255,.45); }
+
+  /* ── OUTPUT GRID ── */
+  .output-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px 28px;
+    margin-top: 48px;
+  }
+  .output-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .output-item svg { color: var(--black); flex-shrink: 0; }
+  .output-item span { font-size: 14px; font-weight: 600; }
+
+  /* ── 3-COL NUMBERED (cosa cambia) ── */
+  .three-col {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    margin-top: 56px;
+  }
+  .three-col-item {
+    padding: 48px 40px;
+    border-right: 1px solid rgba(255,255,255,.08);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 32px;
+  }
+  .three-col-item:last-child { border-right: none; }
+  .three-col-item:first-child { padding-left: 0; }
+  .tc-num {
+    font-family: var(--display);
+    font-size: 100px;
+    font-weight: 800;
+    color: var(--amber);
+    opacity: .2;
+    line-height: 1;
+    letter-spacing: -.04em;
+  }
+  .tc-title {
+    font-family: var(--display);
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.15;
+    margin-bottom: 12px;
+  }
+  .tc-body {
+    font-size: 14px;
+    font-weight: 300;
+    color: rgba(255,255,255,.45);
+    line-height: 1.7;
+  }
+  .tc-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--amber);
+  }
+
+  /* ── NOTE ── */
+  .note {
+    font-size: 13px;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--gray);
+    border-top: 1px solid #e0e0e0;
+    padding-top: 20px;
+    margin-top: 48px;
+    max-width: 680px;
+  }
+  .dark-section .note {
+    color: rgba(255,255,255,.3);
+    border-top-color: rgba(255,255,255,.08);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--black);
+    padding: 64px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  footer img { height: 24px; opacity: .7; }
+  footer span {
+    font-size: 12px;
+    color: rgba(255,255,255,.3);
+    letter-spacing: .05em;
+  }
+
+  /* ── APP SHOWCASE ── */
+  .showcase {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 32px;
+    padding: 80px 64px 0;
+    overflow: hidden;
+  }
+  .showcase img {
+    height: 360px;
+    flex-shrink: 0;
+  }
+  .showcase img:nth-child(2) {
+    height: 400px;
+  }
+  .showcase-sm {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-top: 56px;
+  }
+  .showcase-sm img {
+    height: 380px;
+    filter: drop-shadow(0 16px 32px rgba(0,0,0,.12));
+  }
+
+  /* ── CASE STUDY ── */
+  .case-hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 500px;
+    overflow: hidden;
+  }
+  .case-hero-content {
+    background: var(--black);
+    padding: 80px 64px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .case-hero-phones {
+    background: var(--black);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    padding: 48px 32px;
+  }
+  .case-hero-phones img {
+    height: 360px;
+  }
+
+  /* ── FEATURE SLIDER (case study) ── */
+  .feature-slider-wrap {
+    overflow: hidden;
+    position: relative;
+    padding: 48px 0;
+  }
+  .feature-slider-track {
+    display: flex;
+    gap: 40px;
+    animation: featureScroll 30s linear infinite;
+    width: max-content;
+  }
+  .feature-slider-track:hover {
+    animation-play-state: paused;
+  }
+  .feature-slide {
+    flex: 0 0 auto;
+    width: 260px;
+    text-align: center;
+  }
+  .feature-phone {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 24px;
+  }
+  .feature-phone img {
+    height: 420px;
+  }
+  .feature-text h3 {
+    font-family: var(--display);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 12px;
+    letter-spacing: -.01em;
+  }
+  .feature-text p {
+    font-size: 15px;
+    font-weight: 300;
+    color: rgba(255,255,255,.5);
+    line-height: 1.65;
+  }
+  @keyframes featureScroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ── CYCLE CARDS ── */
+  .cycle-wrap {
+    margin-top: 64px;
+  }
+  .cycle-bar {
+    height: 2px;
+    background: rgba(255,255,255,.06);
+    border-radius: 2px;
+    margin-bottom: 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cycle-bar-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 33.33%;
+    background: var(--amber);
+    border-radius: 2px;
+    transition: left .6s cubic-bezier(.23,1,.32,1);
+  }
+  .cycle-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+  }
+  .cycle-card {
+    padding: 40px 32px;
+    border-radius: 16px;
+    background: rgba(255,255,255,.02);
+    border: 1px solid rgba(255,255,255,.06);
+    transform: scale(.97);
+    opacity: .35;
+    transition: all .6s cubic-bezier(.23,1,.32,1);
+    cursor: pointer;
+  }
+  .cycle-card.active {
+    background: rgba(245,183,49,.06);
+    border-color: rgba(245,183,49,.25);
+    transform: scale(1);
+    opacity: 1;
+    box-shadow: 0 8px 40px rgba(245,183,49,.08);
+  }
+  .cycle-card-num {
+    font-family: var(--display);
+    font-size: 48px;
+    font-weight: 700;
+    color: rgba(255,255,255,.06);
+    line-height: 1;
+    margin-bottom: 20px;
+    transition: color .6s ease;
+  }
+  .cycle-card.active .cycle-card-num {
+    color: var(--amber);
+  }
+  .cycle-card h4 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+  .cycle-card p {
+    font-size: 14px;
+    font-weight: 300;
+    color: rgba(255,255,255,.4);
+    line-height: 1.7;
+  }
+  .cycle-card .cycle-tag {
+    display: inline-block;
+    margin-top: 16px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    background: rgba(245,183,49,.1);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--amber);
+    opacity: 0;
+    transform: translateY(8px);
+    transition: all .4s ease .2s;
+  }
+  .cycle-card.active .cycle-tag {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── FULL BLEED IMAGE ── */
+  .full-img {
+    width: calc(100% - 128px);
+    max-width: 1120px;
+    margin: 0 auto;
+    display: block;
+    border-radius: 16px;
+    object-fit: cover;
+  }
+  .img-half {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+
+  /* ── MARQUEE STRIP ── */
+  .marquee-strip {
+    overflow: hidden;
+    background: var(--amber);
+    padding: 18px 0;
+    white-space: nowrap;
+  }
+  .marquee-track {
+    display: inline-flex;
+    animation: marquee 25s linear infinite;
+  }
+  .marquee-track span {
+    font-family: var(--display);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--black);
+    padding: 0 48px;
+    opacity: .7;
+  }
+  .marquee-track span::after {
+    content: '·';
+    padding-left: 48px;
+    color: rgba(0,0,0,.25);
+  }
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ── ANIMATIONS ── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity .8s cubic-bezier(.23,1,.32,1), transform .8s cubic-bezier(.23,1,.32,1);
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .fade-left {
+    opacity: 0;
+    transform: translateX(-48px);
+    transition: opacity .8s cubic-bezier(.23,1,.32,1), transform .8s cubic-bezier(.23,1,.32,1);
+  }
+  .fade-left.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .fade-right {
+    opacity: 0;
+    transform: translateX(48px);
+    transition: opacity .8s cubic-bezier(.23,1,.32,1), transform .8s cubic-bezier(.23,1,.32,1);
+  }
+  .fade-right.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .scale-in {
+    opacity: 0;
+    transform: scale(.92);
+    transition: opacity .9s cubic-bezier(.23,1,.32,1), transform .9s cubic-bezier(.23,1,.32,1);
+  }
+  .scale-in.visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+  /* Staggered children */
+  .stagger > * {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity .6s cubic-bezier(.23,1,.32,1), transform .6s cubic-bezier(.23,1,.32,1);
+  }
+  .stagger.visible > * { opacity: 1; transform: translateY(0); }
+  .stagger.visible > *:nth-child(1) { transition-delay: 0s; }
+  .stagger.visible > *:nth-child(2) { transition-delay: .12s; }
+  .stagger.visible > *:nth-child(3) { transition-delay: .24s; }
+  .stagger.visible > *:nth-child(4) { transition-delay: .36s; }
+  .stagger.visible > *:nth-child(5) { transition-delay: .48s; }
+  .stagger.visible > *:nth-child(6) { transition-delay: .6s; }
+  .stagger.visible > *:nth-child(7) { transition-delay: .72s; }
+  .stagger.visible > *:nth-child(8) { transition-delay: .84s; }
+
+  /* ── PLACEHOLDER for future app images ── */
+  .app-placeholder {
+    background: var(--gray-light);
+    border-radius: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    color: var(--gray);
+    font-size: 14px;
+    font-weight: 400;
+    font-style: italic;
+  }
+
+  /* ══════════════════════════════════════
+     RESPONSIVE — tablet
+     ══════════════════════════════════════ */
+  @media (max-width: 1024px) {
+    section { padding: 80px 40px; }
+    .split { grid-template-columns: 1fr; min-height: auto; }
+    .split-col { padding: 60px 40px; }
+    .grid-4 { grid-template-columns: 1fr 1fr; }
+    .output-grid { grid-template-columns: 1fr 1fr; }
+    .cycle-cards { gap: 16px; }
+    .cycle-card { padding: 32px 24px; }
+    .cycle-card-num { font-size: 36px; }
+    .feature-phone img { height: 360px; }
+    .feature-slide { width: 240px; }
+    .kpi-strip { grid-template-columns: 1fr; gap: 32px; }
+    .kpi { padding: 20px 0; border-right: none; border-bottom: 1px solid rgba(255,255,255,.06); }
+    .kpi:first-child { padding-left: 0; }
+    .three-col { grid-template-columns: 1fr; }
+    .three-col-item { padding: 32px 0; border-right: none; border-bottom: 1px solid rgba(255,255,255,.06); }
+    .three-col-item:first-child { padding-left: 0; }
+  }
+
+  /* ══════════════════════════════════════
+     RESPONSIVE — mobile
+     ══════════════════════════════════════ */
+  @media (max-width: 640px) {
+    nav { padding: 16px 24px; }
+    nav img { height: 16px; }
+    nav a { font-size: 10px; }
+
+    .hero { min-height: 100vh; padding: 48px 24px; }
+    .hero-video { display: none; }
+    .hero-mobile-bg { display: block; }
+    .hero-content { display: block; }
+    .hero h1 { font-size: 40px; }
+    .hero p { font-size: 15px; }
+    .hero-scroll { display: none; }
+
+    section { padding: 64px 24px; }
+    .section-inner { max-width: 100%; }
+    .s-title { font-size: 32px !important; margin-bottom: 20px; }
+    .s-body { font-size: 15px; }
+
+    .pullquote { padding: 80px 24px; }
+    .pullquote .pq-text { font-size: 28px; }
+    .pullquote .pq-sub { font-size: 14px; }
+
+    .marquee-track span { font-size: 14px; padding: 0 24px; }
+    .marquee-track span::after { padding-left: 24px; }
+
+    .split { grid-template-columns: 1fr; }
+    .split-col { padding: 48px 24px; }
+    .split > div[style*="background:url"] { min-height: 280px !important; }
+
+    .grid-2 { grid-template-columns: 1fr; gap: 32px; }
+    .grid-3 { grid-template-columns: 1fr; gap: 32px; }
+    .grid-4 { grid-template-columns: 1fr 1fr; gap: 24px; }
+    .output-grid { grid-template-columns: 1fr 1fr; gap: 16px 20px; }
+
+    .card-icon { width: 40px; height: 40px; }
+
+    .feature-phone img { height: 300px; }
+    .feature-slide { width: 220px; }
+    .feature-text h3 { font-size: 20px; }
+    .feature-text p { font-size: 14px; }
+    .feature-slider-track { gap: 28px; }
+
+    .cycle-cards { grid-template-columns: 1fr; gap: 16px; }
+    .cycle-card { padding: 28px 24px; }
+    .cycle-card-num { font-size: 32px; margin-bottom: 12px; }
+    .cycle-card h4 { font-size: 16px; }
+    .cycle-card p { font-size: 13px; }
+
+    .steps-row { grid-template-columns: 1fr 1fr; gap: 24px; }
+    .step-num { font-size: 40px; }
+
+    footer { padding: 40px 24px; flex-direction: column; gap: 16px; text-align: center; }
+
+    /* Fix inline grid in metodo split */
+    .split-col div[style*="grid-template-columns: 1fr 1fr"] {
+      grid-template-columns: 1fr !important;
+      gap: 24px !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="main-nav">
+  <img src="/landing/img/volerai-logo.png" alt="VOLER.AI">
+  <div style="display:flex;align-items:center;gap:12px;"><a href="/register">REGISTRATI</a><a href="/login" style="padding:7px 18px;background:var(--amber);color:var(--black);border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.06em;">ACCEDI</a></div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <video class="hero-video" autoplay muted loop playsinline>
+    <source src="/landing/img/Product Launch Video.mp4" type="video/mp4">
+  </video>
+  <div class="hero-mobile-bg"></div>
+  <div class="hero-content">
+    <div class="hero-label">VOLER.AI presenta</div>
+    <h1>Toolia<br>Studio</h1>
+    <p>La piattaforma che trasforma il patrimonio culturale del tuo luogo in un'esperienza di visita memorabile — e in contenuti pronti per ogni canale.</p>
+    <div style="display:flex;gap:12px;margin-top:32px;">
+      <a href="/register" style="display:inline-block;padding:14px 32px;background:var(--amber);color:var(--black);font-weight:700;font-size:14px;text-decoration:none;border-radius:32px;letter-spacing:.04em;">Prova gratis</a>
+      <a href="/login" style="display:inline-block;padding:14px 32px;background:transparent;color:var(--white);font-weight:600;font-size:14px;text-decoration:none;border-radius:32px;border:1px solid rgba(255,255,255,.25);letter-spacing:.04em;">Accedi</a>
+    </div>
+  </div>
+  <div class="hero-scroll">Scorri<div class="scroll-line"></div></div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     PARTE 1: L'APP — concreta, tangibile
+     ══════════════════════════════════════════════ -->
+
+<!-- MARQUEE -->
+<div class="marquee-strip">
+  <div class="marquee-track">
+    <span>App guida</span><span>Percorsi personalizzati</span><span>Mappa interattiva</span><span>Audio guida</span><span>Contenuti per famiglie</span><span>Assistente AI</span><span>Sito web</span><span>Social media</span>
+    <span>App guida</span><span>Percorsi personalizzati</span><span>Mappa interattiva</span><span>Audio guida</span><span>Contenuti per famiglie</span><span>Assistente AI</span><span>Sito web</span><span>Social media</span>
+  </div>
+</div>
+
+<!-- 1. HOOK: l'app -->
+<section class="pullquote scale-in">
+  <div class="s-label">Immagina</div>
+  <div class="pq-text">Un'app guida che <span>ogni visitatore amerà</span>, e molto di più.</div>
+  <div class="pq-sub">Finalmente una app che valorizza al massimo l'esperienza di visita e il patrimonio storico, artistico e naturale per ogni tipo di visitatore in modo semplice e facendo risparmiare tempo e risorse alla tua organizzazione.</div>
+</section>
+
+<!-- 2. COSA FA L'APP — features concrete -->
+<section>
+  <div class="section-inner fade-in" style="text-align:center;">
+    <div class="s-label">Cosa fa l'app</div>
+    <div class="s-title">Ogni visitatore vive<br>un'esperienza diversa</div>
+    <div class="s-body" style="margin:0 auto; text-align:center;">L'app si adatta a chi la usa. Chiede la durata della visita, gli interessi e costruisce il percorso perfetto per ogni visitatore.</div>
+    <div class="grid-2 stagger" style="text-align:left;">
+      <div class="card">
+        <svg class="card-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M24 7 L41 38 L24 30 L7 38 Z"/></svg>
+        <h3>Percorsi su misura</h3>
+        <p>30 minuti o 2 ore? L'app suggerisce il percorso giusto in base al tempo e agli interessi di ogni visitatore.</p>
+      </div>
+      <div class="card">
+        <svg class="card-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="11" y="4" width="26" height="38" rx="4"/><line x1="17" y1="13" x2="31" y2="13"/><line x1="17" y1="20" x2="31" y2="20"/><line x1="17" y1="27" x2="26" y2="27"/></svg>
+        <h3>Testi, audio, immagini</h3>
+        <p>Ogni punto di interesse ha la sua scheda con racconto, foto e audio, declinato in base alle preferenze del visitatore.</p>
+      </div>
+      <div class="card">
+        <svg class="card-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="24" cy="18" r="9"/><path d="M12 43 Q12 31 24 31 Q36 31 36 43"/><line x1="31" y1="12" x2="40" y2="8"/><circle cx="40" cy="8" r="3.5" fill="currentColor" stroke="none"/></svg>
+        <h3>Assistente AI</h3>
+        <p>"Cosa rappresenta questo affresco?" — il visitatore fa domande e riceve risposte puntuali.</p>
+      </div>
+      <div class="card">
+        <svg class="card-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M24 5 L30 18 L44 20 L34 30 L36 44 L24 38 L12 44 L14 30 L4 20 L18 18 Z"/></svg>
+        <h3>Contenuti per famiglie</h3>
+        <p>Missioni, giochi e racconti pensati per i più piccoli. La stessa visita, vissuta in modo diverso.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. CASO REALE: LA ROTONDA — subito la prova -->
+<div class="split">
+  <div class="split-col bg-black fade-left" style="padding:80px 64px;">
+    <div class="s-label">Caso reale</div>
+    <div class="s-title" style="color:var(--white);">Villa La Rotonda</div>
+    <div class="s-body" style="color:rgba(255,255,255,.55);">L'app realizzata per Villa La Rotonda del Palladio. Il visitatore sceglie come esplorare, indica i propri interessi e il tempo a disposizione. L'app fa il resto.</div>
+  </div>
+  <div style="background:url('/landing/img/foto-rotonda.webp') center/cover; min-height:480px;"></div>
+</div>
+
+<!-- 4. FEATURE SLIDER — La Rotonda in azione -->
+<section class="dark-section">
+  <div class="section-inner fade-in" style="max-width:100%; padding:0;">
+    <div style="max-width:1120px; margin:0 auto; padding:0 64px;">
+      <div class="s-label">L'app in azione</div>
+      <div class="s-title" style="color:var(--white); margin-bottom:0;">Ogni visita, su misura</div>
+    </div>
+    <div class="feature-slider-wrap">
+      <div class="feature-slider-track">
+        <!-- set 1 -->
+        <div class="feature-slide">
+          <div class="feature-phone"><img src="/landing/App/2.png" alt="Crea la tua visita"></div>
+          <div class="feature-text">
+            <h3>Scegli come esplorare</h3>
+            <p>Crea la tua visita o segui un itinerario consigliato.</p>
+          </div>
+        </div>
+        <div class="feature-slide">
+          <div class="feature-phone"><img src="/landing/App/4.png" alt="Preferenze"></div>
+          <div class="feature-text">
+            <h3>Dimmi cosa ti piace</h3>
+            <p>Indica i tuoi interessi e l'app mostra i contenuti più rilevanti.</p>
+          </div>
+        </div>
+        <div class="feature-slide">
+          <div class="feature-phone"><img src="/landing/App/5.png" alt="Tempo disponibile"></div>
+          <div class="feature-text">
+            <h3>Quanto tempo hai?</h3>
+            <p>L'app costruisce il percorso perfetto per il tempo che hai.</p>
+          </div>
+        </div>
+        <div class="feature-slide">
+          <div class="feature-phone"><img src="/landing/App/8.png" alt="Mappa interattiva"></div>
+          <div class="feature-text">
+            <h3>Sempre orientato</h3>
+            <p>Mappa con tutti i punti di interesse e indicazioni in tempo reale.</p>
+          </div>
+        </div>
+        <div class="feature-slide">
+          <div class="feature-phone"><img src="/landing/App/7.png" alt="Scheda POI"></div>
+          <div class="feature-text">
+            <h3>Racconto su ogni punto</h3>
+            <p>Ogni tappa ha la sua storia: immagini, testo e audio.</p>
+          </div>
+        </div>
+        <!-- set 2 (duplicate for seamless loop) -->
+        <div class="feature-slide">
+          <div class="feature-phone"><img src="/landing/App/2.png" alt="Crea la tua visita"></div>
+          <div class="feature-text">
+            <h3>Scegli come esplorare</h3>
+            <p>Crea la tua visita o segui un itinerario consigliato.</p>
+          </div>
+        </div>
+        <div class="feature-slide">
+          <div class="feature-phone"><img src="/landing/App/4.png" alt="Preferenze"></div>
+          <div class="feature-text">
+            <h3>Dimmi cosa ti piace</h3>
+            <p>Indica i tuoi interessi e l'app mostra i contenuti più rilevanti.</p>
+          </div>
+        </div>
+        <div class="feature-slide">
+          <div class="feature-phone"><img src="/landing/App/5.png" alt="Tempo disponibile"></div>
+          <div class="feature-text">
+            <h3>Quanto tempo hai?</h3>
+            <p>L'app costruisce il percorso perfetto per il tempo che hai.</p>
+          </div>
+        </div>
+        <div class="feature-slide">
+          <div class="feature-phone"><img src="/landing/App/8.png" alt="Mappa interattiva"></div>
+          <div class="feature-text">
+            <h3>Sempre orientato</h3>
+            <p>Mappa con tutti i punti di interesse e indicazioni in tempo reale.</p>
+          </div>
+        </div>
+        <div class="feature-slide">
+          <div class="feature-phone"><img src="/landing/App/7.png" alt="Scheda POI"></div>
+          <div class="feature-text">
+            <h3>Racconto su ogni punto</h3>
+            <p>Ogni tappa ha la sua storia: immagini, testo e audio.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     PARTE 2: IL PIVOT — "ma non ci fermiamo qui"
+     ══════════════════════════════════════════════ -->
+
+<!-- PIVOT: amber pullquote -->
+<section class="pullquote amber-section scale-in">
+  <div class="s-label">Ma non ci fermiamo qui</div>
+  <div class="pq-text">L'app è solo <span style="color:var(--white);">l'inizio</span>.</div>
+  <div class="pq-sub" style="color:rgba(0,0,0,.6);">Avrai un'app guida bellissima. Ma il vero valore è quello che c'è dietro: i contenuti, le storie, le mappe, i percorsi. Un patrimonio narrativo che può alimentare molto di più.</div>
+</section>
+
+<!-- COME NASCONO I CONTENUTI -->
+<section>
+  <div class="section-inner fade-in" style="text-align:center;">
+    <div class="s-label">Come nascono i contenuti</div>
+    <div class="s-title">Storytelling guidato dall'analisi strategica</div>
+    <div class="s-body" style="margin:0 auto; text-align:center;">Partiamo dall'analisi del target e del luogo. Studiamo chi sono i visitatori, cosa cercano, come si muovono. Da qui nasce un processo di generazione dello storytelling che produce in modo semi-automatico il <b>patrimonio editoriale</b>: testi, audio, percorsi, contenuti per ogni tipo di pubblico.</div>
+  </div>
+</section>
+
+<!-- SPLIT: cantina + spiegazione -->
+<div class="split">
+  <div style="background:url('/landing/img/vino.webp') center/cover; min-height:480px;"></div>
+  <div class="split-col fade-right" style="padding:80px 64px;">
+    <div class="s-label">Non solo ville e musei</div>
+    <div class="s-title" style="font-size:clamp(28px, 3vw, 42px);">Cantine, zoo, parchi tematici, aziende</div>
+    <div class="s-body">Toolia funziona ovunque ci sia un luogo da raccontare. Ogni realtà ha le sue storie: noi le trasformiamo in <b>esperienze guidate</b> su misura per il visitatore.</div>
+  </div>
+</div>
+
+<!-- 5. DOVE VANNO QUEI CONTENUTI — esempio concreto -->
+<div class="split">
+  <div class="split-col bg-black fade-left">
+    <div class="s-label">Un solo lavoro</div>
+    <div class="s-title" style="color:var(--white); font-size:clamp(28px, 3vw, 42px);">Un affresco, un giardino, una statua</div>
+    <div class="s-body" style="color:rgba(255,255,255,.55);">Da un solo punto di interesse, Toolia genera: <b style="color:var(--amber);">scheda audio</b> per l'app, <b style="color:var(--amber);">card per il sito</b>, <b style="color:var(--amber);">carosello social</b>, <b style="color:var(--amber);">contenuti per famiglie</b>, <b style="color:var(--amber);">script video</b>, <b style="color:var(--amber);">materiali educativi</b>, risposte dell'<b style="color:var(--amber);">assistente AI</b> e <b style="color:var(--amber);">contenuti immersivi</b>. Un solo lavoro, tanti utilizzi.</div>
+  </div>
+  <div style="background:url('/landing/img/giraffe.webp') center/cover; min-height:480px;"></div>
+</div>
+
+<!-- SPLIT: parco cascate -->
+<div class="split">
+  <div style="background:url('/landing/img/parco-cascate.webp') center/cover; min-height:480px;"></div>
+  <div class="split-col fade-right" style="padding:80px 64px;">
+    <div class="s-label">Il patrimonio narrativo</div>
+    <div class="s-title" style="font-size:clamp(28px, 3vw, 42px);">Quei contenuti sono il vero asset</div>
+    <div class="s-body">Le storie che creiamo per l'app non restano chiuse nell'app. Sono asset per il sito, i social, i materiali educativi, le postazioni fisiche. Pensate per essere <b>riusate ovunque</b>.</div>
+  </div>
+</div>
+
+<!-- 6. TUTTI GLI OUTPUT -->
+<section class="amber-section">
+  <div class="section-inner fade-in">
+    <div class="s-label">Cosa ottieni</div>
+    <div class="s-title">Un lavoro,<br>tanti risultati</div>
+    <div class="s-body" style="margin-bottom:8px;">Le storie e i contenuti che creiamo per l'app diventano automaticamente materiale per tutti i tuoi canali.</div>
+    <div class="output-grid stagger">
+      <div class="output-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="2" width="14" height="20" rx="3"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="17" x2="12" y2="17"/></svg><span>App di visita</span></div>
+      <div class="output-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="9" x2="22" y2="9"/></svg><span>Pagine del sito</span></div>
+      <div class="output-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg><span>Rubriche social</span></div>
+      <div class="output-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="15" r="4"/><circle cx="16" cy="15" r="4"/><path d="M5 15 Q5 8 12 6 Q19 8 19 15"/></svg><span>Contenuti famiglie</span></div>
+      <div class="output-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="5,4 19,12 5,20"/></svg><span>Script video</span></div>
+      <div class="output-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 20 L4 10 L12 5 L20 10 L20 20"/><rect x="8" y="13" width="8" height="7"/></svg><span>Materiali educativi</span></div>
+      <div class="output-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="9" r="5"/><path d="M5 21 Q5 16 12 16 Q19 16 19 21"/><line x1="16" y1="6" x2="20" y2="4"/><circle cx="20" cy="4" r="2" fill="currentColor" stroke="none"/></svg><span>Assistant verticali</span></div>
+      <div class="output-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 18 Q4 6 12 4 Q20 6 20 18"/><path d="M7 18 Q7 10 12 9 Q17 10 17 18"/></svg><span>Contenuti immersivi</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     PARTE 3: COME FUNZIONA + VANTAGGI
+     ══════════════════════════════════════════════ -->
+
+<!-- 7. COME FUNZIONA — split con foto mappa -->
+<div class="split" style="min-height:auto;">
+  <div class="split-col fade-left" style="padding:80px 64px; gap:40px;">
+    <div>
+      <div class="s-label">Come funziona</div>
+      <div class="s-title" style="font-size:clamp(32px, 3.5vw, 48px);">Quattro passaggi,<br>un risultato completo</div>
+    </div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:28px 36px;">
+      <div>
+        <div style="font-family:var(--display); font-size:32px; font-weight:700; color:var(--amber); opacity:.3; line-height:1; margin-bottom:-4px;">01</div>
+        <h4 style="font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; margin-bottom:6px;">Raccogliamo</h4>
+        <p style="font-size:13px; font-weight:300; color:var(--gray); line-height:1.6;">Le fonti, i documenti e gli obiettivi del tuo progetto.</p>
+      </div>
+      <div>
+        <div style="font-family:var(--display); font-size:32px; font-weight:700; color:var(--amber); opacity:.3; line-height:1; margin-bottom:-4px;">02</div>
+        <h4 style="font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; margin-bottom:6px;">Studiamo il luogo</h4>
+        <p style="font-size:13px; font-weight:300; color:var(--gray); line-height:1.6;">Identità, spazi, percorsi e cosa interessa ai visitatori.</p>
+      </div>
+      <div>
+        <div style="font-family:var(--display); font-size:32px; font-weight:700; color:var(--amber); opacity:.3; line-height:1; margin-bottom:-4px;">03</div>
+        <h4 style="font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; margin-bottom:6px;">Creiamo la mappa</h4>
+        <p style="font-size:13px; font-weight:300; color:var(--gray); line-height:1.6;">Zone, punti di interesse, itinerari e tempi di visita.</p>
+      </div>
+      <div>
+        <div style="font-family:var(--display); font-size:32px; font-weight:700; color:var(--amber); opacity:.3; line-height:1; margin-bottom:-4px;">04</div>
+        <h4 style="font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; margin-bottom:6px;">Produciamo i contenuti</h4>
+        <p style="font-size:13px; font-weight:300; color:var(--gray); line-height:1.6;">Testi, audio, card, missioni — pronti per ogni canale.</p>
+      </div>
+    </div>
+  </div>
+  <div style="background:url('/landing/img/foto-mappa.webp') center/cover; min-height:560px;"></div>
+</div>
+
+<!-- 8. PERCHÉ È DIVERSO — split con foto sentiero -->
+<div class="split">
+  <div style="background:url('/landing/img/azienda.webp') center/cover; min-height:480px;"></div>
+  <div class="split-col fade-right" style="padding:80px 64px;">
+    <div class="s-label">Perché è diverso</div>
+    <div class="s-title" style="font-size:clamp(28px, 3vw, 42px);">Non è solo tecnologia. È pensiero editoriale.</div>
+    <div class="s-body">Usiamo l'intelligenza artificiale per velocizzare il lavoro, non per sostituire le scelte. Ogni contenuto nasce dal <b>tuo luogo</b>, dalla sua identità e dalle sue storie. La tecnologia accelera, ma la regia resta umana.</div>
+  </div>
+</div>
+
+<!-- 9. I NUMERI — amber strip -->
+<section class="amber-section">
+  <div class="section-inner" style="text-align:center;">
+    <div class="s-label fade-in">I numeri</div>
+    <div class="s-title scale-in">Cosa cambia per te</div>
+    <div class="grid-4 stagger" style="margin-top:64px; text-align:center;">
+      <div style="display:flex; flex-direction:column; align-items:center; gap:12px;">
+        <div style="font-family:var(--display); font-size:52px; font-weight:700; line-height:1;">–80%</div>
+        <h3 style="font-size:15px; font-weight:700;">Tempo risparmiato</h3>
+        <p style="font-size:13px; font-weight:300; color:rgba(0,0,0,.5); line-height:1.6;">Rispetto ai processi tradizionali di produzione contenuti.</p>
+      </div>
+      <div style="display:flex; flex-direction:column; align-items:center; gap:12px;">
+        <div style="font-family:var(--display); font-size:52px; font-weight:700; line-height:1;">0</div>
+        <h3 style="font-size:15px; font-weight:700;">Lavori doppi</h3>
+        <p style="font-size:13px; font-weight:300; color:rgba(0,0,0,.5); line-height:1.6;">Ogni contenuto si scrive una volta e si usa ovunque.</p>
+      </div>
+      <div style="display:flex; flex-direction:column; align-items:center; gap:12px;">
+        <div style="font-family:var(--display); font-size:52px; font-weight:700; line-height:1;">3x</div>
+        <h3 style="font-size:15px; font-weight:700;">Più veloce</h3>
+        <p style="font-size:13px; font-weight:300; color:rgba(0,0,0,.5); line-height:1.6;">Dall'idea al contenuto pubblicato.</p>
+      </div>
+      <div style="display:flex; flex-direction:column; align-items:center; gap:12px;">
+        <div style="font-family:var(--display); font-size:52px; font-weight:700; line-height:1;">8+</div>
+        <h3 style="font-size:15px; font-weight:700;">Canali serviti</h3>
+        <p style="font-size:13px; font-weight:300; color:rgba(0,0,0,.5); line-height:1.6;">App, sito, social, stampa, educativi e altro.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10. DALLA VISITA ALLA COMUNICAZIONE — split con foto villa -->
+<div class="split">
+  <div style="background:url('/landing/img/borgo.webp') center/cover; min-height:480px;"></div>
+  <div class="split-col fade-right" style="gap:32px;">
+    <div class="s-label">Due impatti, un sistema</div>
+    <div class="s-title" style="font-size:clamp(28px, 3vw, 40px);">La visita migliora.<br>La comunicazione anche.</div>
+    <div class="s-body">Quello che costruiamo per l'app — storie, percorsi, contenuti — rafforza anche la comunicazione del tuo luogo: sito, social, materiali educativi, stampa. <b>Un solo investimento, doppio risultato.</b></div>
+  </div>
+</div>
+
+<!-- 11. COSA CAMBIA — orbita animata -->
+<section class="dark-section">
+  <div class="section-inner fade-in">
+    <div class="s-label">In sintesi</div>
+    <div class="s-title">Non compri un'app.<br>Scegli un sistema.</div>
+    <div class="s-body" style="margin-bottom:0;">Un sistema che capisce il tuo luogo, lo racconta meglio e moltiplica il valore di ogni contenuto che produce.</div>
+    <div class="cycle-wrap" id="cycle">
+      <div class="cycle-bar"><div class="cycle-bar-fill"></div></div>
+      <div class="cycle-cards">
+        <div class="cycle-card active" data-step="0">
+          <div class="cycle-card-num">01</div>
+          <h4>Capisce il tuo luogo</h4>
+          <p>Legge le fonti, studia gli spazi e organizza il patrimonio in una struttura chiara.</p>
+          <span class="cycle-tag">Tutto in ordine</span>
+        </div>
+        <div class="cycle-card" data-step="1">
+          <div class="cycle-card-num">02</div>
+          <h4>Racconta come merita</h4>
+          <p>Visite più belle, contenuti di qualità, aggiornamenti rapidi quando serve.</p>
+          <span class="cycle-tag">Visite memorabili</span>
+        </div>
+        <div class="cycle-card" data-step="2">
+          <div class="cycle-card-num">03</div>
+          <h4>Moltiplica il valore</h4>
+          <p>Gli stessi contenuti alimentano app, sito, social, stampa — senza rifare nulla.</p>
+          <span class="cycle-tag">Un lavoro, tanti canali</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 12. SPLIT BOSCHETTO + chiusura emotiva -->
+<div class="split" style="min-height:400px;">
+  <div style="background:url('/landing/img/foto-villa.webp') center/cover; min-height:400px;"></div>
+  <div class="split-col bg-black fade-right">
+    <div class="s-body" style="color:rgba(255,255,255,.55); font-size:20px; font-style:italic; line-height:1.7;">Il racconto non finisce con la visita. <b style="color:var(--amber);">Continua a crescere</b>, a generare valore, a costruire l'identità del tuo luogo.</div>
+  </div>
+</div>
+
+<!-- 13. CLOSING -->
+<section class="dark-section" style="padding:140px 64px; text-align:center;">
+  <div class="fade-in" style="display:flex; flex-direction:column; align-items:center;">
+    <img src="/landing/img/volerai-logo.png" alt="VOLER.AI" style="height:32px; opacity:.8; margin-bottom:48px;">
+    <div class="s-title" style="color:var(--white); margin-bottom:24px;">Toolia Studio.</div>
+    <div class="s-body" style="color:rgba(255,255,255,.55); text-align:center; max-width:700px;">Un'app guida bellissima per i tuoi visitatori. Ma soprattutto, un sistema che trasforma il tuo patrimonio in <b>storie, contenuti e comunicazione</b> — su tutti i canali, senza ricominciare ogni volta da zero.</div>
+    <div style="display:flex;gap:12px;margin-top:48px;justify-content:center;"><a href="/register" style="display:inline-block;padding:14px 36px;background:var(--amber);color:var(--black);font-weight:700;font-size:14px;text-decoration:none;border-radius:32px;letter-spacing:.04em;">Inizia gratis</a><a href="mailto:info@voler.ai" style="display:inline-block;padding:14px 36px;background:transparent;color:rgba(255,255,255,.6);font-weight:600;font-size:14px;text-decoration:none;border-radius:32px;border:1px solid rgba(255,255,255,.15);letter-spacing:.04em;">Contattaci</a></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <img src="/landing/img/volerai-logo.png" alt="VOLER.AI">
+  <span>info@voler.ai &nbsp;·&nbsp; voler.ai</span>
+</footer>
+
+<script>
+  // Intersection Observer for all animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.fade-in, .fade-left, .fade-right, .scale-in, .stagger').forEach(el => observer.observe(el));
+
+  // Nav scroll effect
+  const navEl = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    navEl.classList.toggle('scrolled', window.scrollY > 80);
+  });
+
+  // Animated KPI counter
+  const kpiObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const text = el.textContent;
+        const match = text.match(/([–-]?)(\d+)(\+?%?)/);
+        if (!match) return;
+        const prefix = match[1];
+        const target = parseInt(match[2]);
+        const suffix = match[3];
+        let current = 0;
+        const step = Math.max(1, Math.floor(target / 40));
+        const interval = setInterval(() => {
+          current += step;
+          if (current >= target) {
+            current = target;
+            clearInterval(interval);
+          }
+          el.textContent = prefix + current + suffix;
+        }, 30);
+        kpiObserver.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('.kpi-number').forEach(el => kpiObserver.observe(el));
+
+  // Cycle cards animation
+  const cycleEl = document.getElementById('cycle');
+  if (cycleEl) {
+    let step = 0;
+    let cycleTimer = null;
+    const cards = cycleEl.querySelectorAll('.cycle-card');
+    const barFill = cycleEl.querySelector('.cycle-bar-fill');
+
+    function setCycleStep(s) {
+      step = s;
+      cards.forEach(c => c.classList.toggle('active', parseInt(c.dataset.step) === s));
+      barFill.style.left = (s * 33.33) + '%';
+    }
+
+    const cycleObs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          cycleTimer = setInterval(() => {
+            setCycleStep((step + 1) % 3);
+          }, 3000);
+          cycleObs.unobserve(cycleEl);
+        }
+      });
+    }, { threshold: 0.3 });
+    cycleObs.observe(cycleEl);
+
+    cards.forEach(c => {
+      c.addEventListener('click', () => {
+        clearInterval(cycleTimer);
+        setCycleStep(parseInt(c.dataset.step));
+        cycleTimer = setInterval(() => {
+          setCycleStep((step + 1) % 3);
+        }, 3000);
+      });
+    });
+  }
+</script>
+</body>
+</html>
